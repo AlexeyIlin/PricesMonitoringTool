@@ -1,0 +1,7 @@
+.idea
+*.iml
+*/*.iml
+app.properties
+log4j-application.log
+target
+out
