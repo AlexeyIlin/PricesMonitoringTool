@@ -23,18 +23,18 @@ public class Main{
         RestService restService = new RestService();
 
         propertiesReader.fileReader();
-        Calendar rightNow = Calendar.getInstance();
-
 
             while (true) {
                 try {
+
+                Calendar rightNow = Calendar.getInstance();
                 hour = rightNow.get(Calendar.HOUR_OF_DAY);
                 day = rightNow.get(Calendar.DAY_OF_WEEK);
                 long millis = System.currentTimeMillis();
 
 
-                if ((propertiesReader.getStarttime() <= hour
-                        && hour <= propertiesReader.getEndtime())
+                if (propertiesReader.getStarttime() <= hour
+                        && hour <= propertiesReader.getEndtime()
                         && Calendar.MONDAY <= day
                         && day <= Calendar.FRIDAY ) {
 
