@@ -44,12 +44,14 @@ public class Main{
                         token = restService.getToken(propertiesReader.getUrl(), propertiesReader.getLogin(), propertiesReader.getPass());
                     }
 
-                    time = restService.getTime(propertiesReader.getUrl(), token, propertiesReader.getSymbol(), propertiesReader.getRoute());
-                    result = pricesChecker.checkTime(time, propertiesReader.getParameter());
-                    if (result != null) logger.error(result);
+                    for (int i = 0 ; i < propertiesReader.getSymbol().size() ; i ++) {
+                        time = restService.getTime(propertiesReader.getUrl(), token, propertiesReader.getSymbol().get(i), propertiesReader.getRoute().get(i));
+                        result = pricesChecker.checkTime(time, propertiesReader.getParameter().get(i));
+                        if (result != null) logger.error(result);
                         else logger.debug("Ok");
+                    }
                 }
-                    Thread.sleep(propertiesReader.getParameter() - millis % propertiesReader.getParameter());
+                    Thread.sleep(propertiesReader.getParameter().get(0) - millis % propertiesReader.getParameter().get(0));
                 } catch (Exception e) {
                     logger.error("Error", e);
             }

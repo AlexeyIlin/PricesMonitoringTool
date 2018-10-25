@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 import org.json.*;
@@ -109,7 +110,7 @@ public class RestService {
 
 
 
-    public long getTime(String url, String token, int tradeinstId, int routeId){
+    public long getTime(String url, String token, Object tradeinstId, Object routeId){
 
         long time = 0;
         try {
@@ -118,22 +119,27 @@ public class RestService {
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
 
-        if (conn.getResponseCode() != 200) {
-            throw new RuntimeException("Failed : HTTP error code : "
-                    + conn.getResponseCode());
+        if (conn.getResponseCode() == 200 ) {
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (conn.getInputStream())));
+
+            String output;
+            while ((output = br.readLine()) != null) {
+
+                JSONObject obj = new JSONObject(output);
+                time = obj.getLong("time");
+            }
+
+            conn.disconnect();
         }
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(
-                (conn.getInputStream())));
-
-        String output;
-        while ((output = br.readLine()) != null) {
-
-            JSONObject obj = new JSONObject(output);
-            time = obj.getLong("time");
+        else if (conn.getResponseCode() == 204 ){
+            return time;
         }
 
-        conn.disconnect();
+        else
+            throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
 
     } catch (MalformedURLException e) {
 
