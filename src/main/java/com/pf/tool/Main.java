@@ -15,7 +15,7 @@ public class Main{
         String token = null;
         long time;
         String result;
-        boolean isExpired;
+        boolean isExpired = false;
         int hour, day;
 
         PricesChecker pricesChecker = new PricesChecker();
@@ -38,11 +38,13 @@ public class Main{
                         && Calendar.MONDAY <= day
                         && day <= Calendar.FRIDAY ) {
 
-                    isExpired = restService.getIsExpired(propertiesReader.getUrl(), token);
+                    if (token != null)
+                        isExpired = restService.getIsExpired(propertiesReader.getUrl(), token);
+                        else
+                            token = restService.getToken(propertiesReader.getUrl(), propertiesReader.getLogin(), propertiesReader.getPass());
+                        if (isExpired)
+                            token = restService.getToken(propertiesReader.getUrl(), propertiesReader.getLogin(), propertiesReader.getPass());
 
-                    if (token == null || isExpired) {
-                        token = restService.getToken(propertiesReader.getUrl(), propertiesReader.getLogin(), propertiesReader.getPass());
-                    }
 
                     for (int i = 0 ; i < propertiesReader.getSymbol().size() ; i ++) {
                         time = restService.getTime(propertiesReader.getUrl(), token, propertiesReader.getSymbol().get(i), propertiesReader.getRoute().get(i));

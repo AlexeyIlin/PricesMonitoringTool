@@ -25,7 +25,7 @@ public class PricesChecker {
                 result = "Prices delay is" + ": " + (currentTime - time )/1000 + " secs";
                 TelegramBot telegramBot = new TelegramBot();
                 for (int i = 0 ; i< 2 ; i++) {
-                    if (chatid.get(i) == null)
+                    if (chatid.get(i).equals(""))
                         break;
                         else
                             telegramBot.sendMsg((String) chatid.get(i), result);

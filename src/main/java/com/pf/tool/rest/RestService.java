@@ -15,6 +15,7 @@ import org.json.*;
 public class RestService {
 
     private final static Logger logger = Logger.getLogger(RestService.class);
+    private String refreshToken;
 
     public String getToken(String url, String login, String pass) {
 
@@ -46,6 +47,7 @@ public class RestService {
 
                 JSONObject obj = new JSONObject(output);
                 token = obj.getString("accessToken");
+                refreshToken = obj.getString("refreshToken");
 
             }
 
@@ -65,10 +67,29 @@ public class RestService {
     }
 
 
+    public void refreshToken(String url) {
 
-    public boolean getIsExpired(String url, String token){
+        try {
+            URL u = new URL(url + "/rest/auth/token/refreshh?refreshToken=" + refreshToken);
+            HttpURLConnection conn = (HttpURLConnection) u.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
 
-        boolean isExpired = false;
+        } catch (MalformedURLException e) {
+
+            logger.error(e);
+
+        } catch (IOException e) {
+
+            logger.error(e);
+
+        }
+    }
+
+
+    public Boolean getIsExpired(String url, String token){
+
+        Boolean isExpired = null;
         try {
             URL u = new URL(url + "/rest/auth/token/verify/access?token=" + token);
             HttpURLConnection conn = (HttpURLConnection) u.openConnection();
@@ -76,7 +97,7 @@ public class RestService {
             conn.setRequestProperty("Accept", "application/json");
 
             if (conn.getResponseCode() != 200) {
-                return isExpired;
+                return true;
             }
 
 

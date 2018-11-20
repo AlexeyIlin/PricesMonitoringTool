@@ -81,17 +81,30 @@ public class PropertiesReader {
             login = property.getProperty("login");
             pass = property.getProperty("password");
 
-            symbol.add(parseInt(property.getProperty("symbol.id1")));
-            route.add(parseInt(property.getProperty("route.id1")));
-            parameter.add(parseInt(property.getProperty("delay.parameter1")));
+            if (!property.getProperty("symbol.id1").equals("")
+                    && property.getProperty("route.id1") != null
+                    && property.getProperty("delay.parameter1") != null) {
+                symbol.add(parseInt(property.getProperty("symbol.id1")));
+                route.add(parseInt(property.getProperty("route.id1")));
+                parameter.add(parseInt(property.getProperty("delay.parameter1")));
+            }
 
-            symbol.add(parseInt(property.getProperty("symbol.id2")));
-            route.add(parseInt(property.getProperty("route.id2")));
-            parameter.add(parseInt(property.getProperty("delay.parameter2")));
+            if (!property.getProperty("symbol.id2").equals("")
+                    && property.getProperty("route.id2") != null
+                    && property.getProperty("delay.parameter2") != null) {
+                symbol.add(parseInt(property.getProperty("symbol.id2")));
+                route.add(parseInt(property.getProperty("route.id2")));
+                parameter.add(parseInt(property.getProperty("delay.parameter2")));
+            }
 
-            symbol.add(parseInt(property.getProperty("symbol.id3")));
-            route.add(parseInt(property.getProperty("route.id3")));
-            parameter.add(parseInt(property.getProperty("delay.parameter3")));
+
+            if (!property.getProperty("symbol.id3").equals("")
+                    && property.getProperty("route.id3") != null
+                    && property.getProperty("delay.parameter3") != null){
+                symbol.add(parseInt(property.getProperty("symbol.id3")));
+                route.add(parseInt(property.getProperty("route.id3")));
+                parameter.add(parseInt(property.getProperty("delay.parameter3")));
+            }
 
             starttime = parseInt(property.getProperty("start.time"));
             endtime = parseInt(property.getProperty("end.time"));
