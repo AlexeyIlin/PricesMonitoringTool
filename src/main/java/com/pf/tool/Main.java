@@ -5,6 +5,7 @@ import com.pf.tool.properties.PropertiesReader;
 import com.pf.tool.rest.RestService;
 import org.apache.log4j.Logger;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Main{
 
@@ -16,7 +17,8 @@ public class Main{
         long time;
         String result;
         boolean isExpired = false;
-        int hour, day;
+        int day;
+        Date curTime;
 
         PricesChecker pricesChecker = new PricesChecker();
         PropertiesReader propertiesReader = new PropertiesReader();
@@ -28,13 +30,13 @@ public class Main{
                 try {
 
                 Calendar rightNow = Calendar.getInstance();
-                hour = rightNow.get(Calendar.HOUR_OF_DAY);
+                curTime = rightNow.getTime();
                 day = rightNow.get(Calendar.DAY_OF_WEEK);
                 long millis = System.currentTimeMillis();
 
 
-                if (propertiesReader.getStarttime() <= hour
-                        && hour <= propertiesReader.getEndtime()
+                if (curTime.after(propertiesReader.getStarttime())
+                        && curTime.before(propertiesReader.getEndtime())
                         && Calendar.MONDAY <= day
                         && day <= Calendar.FRIDAY ) {
 

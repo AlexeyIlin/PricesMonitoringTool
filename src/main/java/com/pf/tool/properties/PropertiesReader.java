@@ -3,7 +3,11 @@ package com.pf.tool.properties;
 import org.apache.log4j.Logger;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 import static java.lang.Integer.parseInt;
 
@@ -17,8 +21,7 @@ public class PropertiesReader {
     private ArrayList<Integer> route = new ArrayList<Integer>();
     private ArrayList<Integer> symbol = new ArrayList<Integer>();
     private ArrayList<Integer> parameter = new ArrayList<Integer>();
-    private int starttime;
-    private int endtime;
+    private Date endtime, starttime;
     private String botname;
     private String bottoken;
     private ArrayList<String> chatid = new ArrayList<String>();
@@ -43,7 +46,7 @@ public class PropertiesReader {
         return symbol;
     }
 
-    public int getStarttime() {
+    public Date getStarttime() {
         return starttime;
     }
 
@@ -51,7 +54,7 @@ public class PropertiesReader {
         return parameter;
     }
 
-    public int getEndtime() {
+    public Date getEndtime() {
         return endtime;
     }
 
@@ -106,8 +109,15 @@ public class PropertiesReader {
                 parameter.add(parseInt(property.getProperty("delay.parameter3")));
             }
 
-            starttime = parseInt(property.getProperty("start.time"));
-            endtime = parseInt(property.getProperty("end.time"));
+            String stime, etime;
+            int year = Calendar.getInstance().get(Calendar.YEAR);
+            int month = Calendar.getInstance().get(Calendar.MONTH ) + 1;
+            int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+            SimpleDateFormat sdf = new SimpleDateFormat( "yyyy.MM.dd HH:mm");
+            stime = property.getProperty("start.time");
+            starttime = sdf.parse(year + "." + month + "." + day + " " + stime);
+            etime = property.getProperty("end.time");
+            endtime = sdf.parse(year + "." + month + "." + day + " " + etime);
             botname = property.getProperty("bot.name");
             bottoken = property.getProperty("bot.token");
             chatid.add(property.getProperty("chat.id"));
@@ -116,6 +126,8 @@ public class PropertiesReader {
 
         }catch (IOException e){
             logger.error("Cannot open file", e);
+        } catch (ParseException e) {
+            logger.error(e);
         }
     }
 
