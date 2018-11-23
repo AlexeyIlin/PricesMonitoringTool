@@ -4,6 +4,8 @@ import com.pf.tool.logic.PricesChecker;
 import com.pf.tool.properties.PropertiesReader;
 import com.pf.tool.rest.RestService;
 import org.apache.log4j.Logger;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -17,13 +19,12 @@ public class Main{
         long time;
         String result;
         boolean isExpired = false;
-        int day;
-        Date curTime;
+        int weekDay, curDay, year, month;
+        Date curTime, stime, etime;;
 
         PricesChecker pricesChecker = new PricesChecker();
         PropertiesReader propertiesReader = new PropertiesReader();
         RestService restService = new RestService();
-
         propertiesReader.fileReader();
 
             while (true) {
@@ -31,14 +32,21 @@ public class Main{
 
                 Calendar rightNow = Calendar.getInstance();
                 curTime = rightNow.getTime();
-                day = rightNow.get(Calendar.DAY_OF_WEEK);
+                weekDay = rightNow.get(Calendar.DAY_OF_WEEK);
+                year = rightNow.get(Calendar.YEAR);
+                month = rightNow.get(Calendar.MONTH ) + 1;
+                curDay = rightNow.get(Calendar.DAY_OF_MONTH);
+
                 long millis = System.currentTimeMillis();
+                SimpleDateFormat sdf = new SimpleDateFormat( "yyyy.MM.dd HH:mm");
 
+                stime = sdf.parse(year + "." + month + "." + curDay + " " + propertiesReader.getStarttime());
+                etime = sdf.parse(year + "." + month + "." + curDay + " " + propertiesReader.getEndtime());
 
-                if (curTime.after(propertiesReader.getStarttime())
-                        && curTime.before(propertiesReader.getEndtime())
-                        && Calendar.MONDAY <= day
-                        && day <= Calendar.FRIDAY ) {
+                if (curTime.after(stime)
+                        && curTime.before(etime)
+                        && Calendar.MONDAY <= weekDay
+                        && weekDay <= Calendar.FRIDAY ) {
 
                     if (token != null)
                         isExpired = restService.getIsExpired(propertiesReader.getUrl(), token);
