@@ -15,7 +15,7 @@ import org.json.*;
 public class RestService {
 
     private final static Logger logger = Logger.getLogger(RestService.class);
-    private String refreshToken;
+    //private String refreshToken;
 
     public String getToken(String url, String login, String pass) {
 
@@ -47,7 +47,7 @@ public class RestService {
 
                 JSONObject obj = new JSONObject(output);
                 token = obj.getString("accessToken");
-                refreshToken = obj.getString("refreshToken");
+                //refreshToken = obj.getString("refreshToken");
 
             }
 
@@ -67,7 +67,7 @@ public class RestService {
     }
 
 
-    public void refreshToken(String url) {
+    /*public void refreshToken(String url) {
 
         try {
             URL u = new URL(url + "/rest/auth/token/refreshh?refreshToken=" + refreshToken);
@@ -84,7 +84,7 @@ public class RestService {
             logger.error(e);
 
         }
-    }
+    }*/
 
 
     public Boolean getIsExpired(String url, String token){
