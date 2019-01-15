@@ -91,10 +91,11 @@ public class RestService {
 
         Boolean isExpired = null;
         try {
-            URL u = new URL(url + "/rest/auth/token/verify/access?token=" + token);
+            URL u = new URL(url + "/rest/auth/token/verify/");
             HttpURLConnection conn = (HttpURLConnection) u.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
+            conn.setRequestProperty("Authorization", "Bearer "+token);
 
             if (conn.getResponseCode() != 200) {
                 return true;
@@ -135,10 +136,11 @@ public class RestService {
 
         long time = 0;
         try {
-        URL u = new URL(url +  "/rest/instruments/"+tradeinstId+"/routes/"+routeId+"/quotes/tradeTick?token="+token);
+        URL u = new URL(url +  "/rest/instruments/"+tradeinstId+"/routes/"+routeId+"/quotes/tradeTick");
         HttpURLConnection conn = (HttpURLConnection) u.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
+        conn.setRequestProperty("Authorization", "Bearer "+token);
 
         if (conn.getResponseCode() == 200 ) {
 
@@ -174,7 +176,50 @@ public class RestService {
         return time;
     }
 
+    public ArrayList<Double> getLevel2(String url, String token, Object tradeinstId, Object routeId){
 
+        ArrayList<Double> PriceLevel0 = new ArrayList<Double>();
+
+        try{
+            URL u = new URL(url + "rest/instruments/"+tradeinstId+"/routes/"+routeId+"/quotes/level2?levelTo=0");
+            HttpURLConnection conn = (HttpURLConnection) u.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setRequestProperty("Authorization", "Bearer "+token);
+
+            if (conn.getResponseCode() == 200 ) {
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(
+                        (conn.getInputStream())));
+
+                String output;
+                while ((output = br.readLine()) != null) {
+
+                    JSONObject obj = new JSONObject(output);
+                    JSONObject obj_array_bids = obj.getJSONArray("bids").getJSONObject(0);
+                    PriceLevel0.add(obj_array_bids.getDouble("price"));
+
+                    JSONObject obj_array_offers = obj.getJSONArray("offers").getJSONObject(0);
+                    PriceLevel0.add(obj_array_offers.getDouble("price"));
+
+
+                }
+
+                conn.disconnect();
+            }
+
+            else {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            }
+        }catch (MalformedURLException e){
+            logger.error(e);
+        }catch (IOException e) {
+
+            logger.error(e);
+        }
+
+        return PriceLevel0;
+    }
 
 }
 

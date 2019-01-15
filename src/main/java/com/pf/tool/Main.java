@@ -1,11 +1,13 @@
 package com.pf.tool;
 
+import com.pf.tool.logic.Level2Checker;
 import com.pf.tool.logic.PricesChecker;
 import com.pf.tool.properties.PropertiesReader;
 import com.pf.tool.rest.RestService;
 import org.apache.log4j.Logger;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -20,9 +22,11 @@ public class Main{
         String result;
         boolean isExpired = false;
         int weekDay, curDay, year, month;
-        Date curTime, stime, etime;;
+        Date curTime, stime, etime;
+        ArrayList level2price = new ArrayList();
 
         PricesChecker pricesChecker = new PricesChecker();
+        Level2Checker level2Checker = new Level2Checker();
         PropertiesReader propertiesReader = new PropertiesReader();
         RestService restService = new RestService();
         propertiesReader.fileReader();
@@ -57,10 +61,20 @@ public class Main{
 
 
                     for (int i = 0 ; i < propertiesReader.getSymbol().size() ; i ++) {
-                        time = restService.getTime(propertiesReader.getUrl(), token, propertiesReader.getSymbol().get(i), propertiesReader.getRoute().get(i));
-                        result = pricesChecker.checkTime(time, propertiesReader.getParameter().get(i));
-                        if (result != null) logger.error(result);
-                        else logger.debug("Ok");
+                        if (propertiesReader.getMode() == 1 || propertiesReader.getMode() == 3) {
+                            time = restService.getTime(propertiesReader.getUrl(), token, propertiesReader.getSymbol().get(i), propertiesReader.getRoute().get(i));
+                            result = pricesChecker.checkTime(time, propertiesReader.getParameter().get(i));
+                            if (result != null) logger.error(result);
+                            else logger.debug("Ok");
+                        }
+
+                        if (propertiesReader.getMode() == 2 || propertiesReader.getMode() == 3){
+                            level2price = restService.getLevel2(propertiesReader.getUrl(), token, propertiesReader.getSymbol().get(i), propertiesReader.getRoute().get(i));
+                            result = level2Checker.checkLevel2(level2price);
+                            if (result != null) logger.error(result);
+                            else logger.debug("Ok");
+                        }
+
                     }
                 }
                     Thread.sleep(propertiesReader.getParameter().get(0) - millis % propertiesReader.getParameter().get(0));

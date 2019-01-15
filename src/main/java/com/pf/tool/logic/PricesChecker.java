@@ -9,7 +9,7 @@ public class PricesChecker {
 
     public String checkTime(long time, double parameter){
 
-        String result;
+        String result = null;
 
         Calendar rightNow = Calendar.getInstance();
         long currentTime = rightNow.getTimeInMillis();
@@ -30,10 +30,9 @@ public class PricesChecker {
                         else
                             telegramBot.sendMsg((String) chatid.get(i), result);
                 }
-                return result;
             }
 
-        return null;
+        return result;
     }
 
 }

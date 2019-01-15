@@ -21,6 +21,7 @@ public class PropertiesReader {
     private String botname;
     private String bottoken;
     private ArrayList<String> chatid = new ArrayList<String>();
+    private int mode;
 
     public String getUrl() {
         return url;
@@ -40,6 +41,10 @@ public class PropertiesReader {
 
     public ArrayList getSymbol() {
         return symbol;
+    }
+
+    public int getMode() {
+        return mode;
     }
 
     public String getStarttime() {
@@ -105,6 +110,7 @@ public class PropertiesReader {
                 parameter.add(parseInt(property.getProperty("delay.parameter3")));
             }
 
+            mode = parseInt(property.getProperty("mode.type"));
             starttime = property.getProperty("start.time");
             endtime = property.getProperty("end.time");
             botname = property.getProperty("bot.name");
