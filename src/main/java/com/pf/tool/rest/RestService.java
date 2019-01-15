@@ -181,7 +181,7 @@ public class RestService {
         ArrayList<Double> PriceLevel0 = new ArrayList<Double>();
 
         try{
-            URL u = new URL(url + "rest/instruments/"+tradeinstId+"/routes/"+routeId+"/quotes/level2?levelTo=0");
+            URL u = new URL(url + "/rest/instruments/"+tradeinstId+"/routes/"+routeId+"/quotes/level2?levelTo=0");
             HttpURLConnection conn = (HttpURLConnection) u.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
