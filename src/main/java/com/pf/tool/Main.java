@@ -23,7 +23,7 @@ public class Main{
         boolean isExpired = false;
         int weekDay, curDay, year, month;
         Date curTime, stime, etime;
-        ArrayList level2price = new ArrayList();
+        ArrayList<Double> level2price;
 
         PricesChecker pricesChecker = new PricesChecker();
         Level2Checker level2Checker = new Level2Checker();
