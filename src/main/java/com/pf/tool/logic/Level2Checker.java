@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Level2Checker {
 
-    public String checkLevel2(ArrayList<Double> level2price){
+    public String checkLevel2(ArrayList<Double> level2price, Object tradableInstrumentID, Object routeId){
 
         String result = null;
         double bid = level2price.get(0);
@@ -19,7 +19,12 @@ public class Level2Checker {
 
         if ((ask - bid ) < 0 ){
 
-            result = "Wrong BID/ASK in level2. Bid price: " + bid + "Ask price: " + ask;
+            result = "Wrong BID/ASK in level2. "
+                    + "\n" + "Bid price: " + bid + "  Ask price: " + ask
+                    + "\n" + "tradableInstrumentID = "
+                    + tradableInstrumentID.toString()
+                    + "\n" + " routeId = "
+                    + routeId.toString();
 
             TelegramBot telegramBot = new TelegramBot();
             for (int i = 0 ; i< 2 ; i++) {

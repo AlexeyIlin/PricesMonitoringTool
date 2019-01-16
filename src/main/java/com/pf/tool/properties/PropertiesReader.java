@@ -85,29 +85,24 @@ public class PropertiesReader {
             login = property.getProperty("login");
             pass = property.getProperty("password");
 
-            if (!property.getProperty("symbol.id1").equals("")
-                    && property.getProperty("route.id1") != null
-                    && property.getProperty("delay.parameter1") != null) {
-                symbol.add(parseInt(property.getProperty("symbol.id1")));
-                route.add(parseInt(property.getProperty("route.id1")));
-                parameter.add(parseInt(property.getProperty("delay.parameter1")));
-            }
+            int i= 1;
+            boolean empty = false;
+            while (!empty) {
+                try {
+                    if (property.getProperty("symbol.id"+i) != null
+                            || property.getProperty("route.id"+i) != null
+                            || property.getProperty("delay.parameter"+i) != null) {
+                        symbol.add(parseInt(property.getProperty("symbol.id" + i)));
+                        route.add(parseInt(property.getProperty("route.id" + i)));
+                        parameter.add(parseInt(property.getProperty("delay.parameter" + i)));
+                        i++;
+                    }
+                    else
+                        empty= true;
+                }catch (NullPointerException e) {
+                    logger.debug("There are no more parameters");
+                }
 
-            if (!property.getProperty("symbol.id2").equals("")
-                    && property.getProperty("route.id2") != null
-                    && property.getProperty("delay.parameter2") != null) {
-                symbol.add(parseInt(property.getProperty("symbol.id2")));
-                route.add(parseInt(property.getProperty("route.id2")));
-                parameter.add(parseInt(property.getProperty("delay.parameter2")));
-            }
-
-
-            if (!property.getProperty("symbol.id3").equals("")
-                    && property.getProperty("route.id3") != null
-                    && property.getProperty("delay.parameter3") != null){
-                symbol.add(parseInt(property.getProperty("symbol.id3")));
-                route.add(parseInt(property.getProperty("route.id3")));
-                parameter.add(parseInt(property.getProperty("delay.parameter3")));
             }
 
             mode = parseInt(property.getProperty("mode.type"));
@@ -120,7 +115,7 @@ public class PropertiesReader {
             fstream.close();
 
         }catch (IOException e){
-            logger.error("Cannot open file", e);
+            logger.error("Cannot open file or wrong settings", e);
         }
     }
 
