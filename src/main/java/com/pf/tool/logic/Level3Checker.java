@@ -7,7 +7,7 @@ import java.util.Calendar;
 
 public class Level3Checker {
 
-    public String checkTime(long time, double parameter, Object tradableInstrumentID, Object routeId){
+    public String checkTime(long time, double parameter, String symbolName){
 
         String result = null;
 
@@ -23,10 +23,8 @@ public class Level3Checker {
         }
             if (time + parameter < currentTime) {
                 result = "Prices delay is" + ":  " + (currentTime - time )/1000 + " secs"
-                        + "\n" + "tradableInstrumentID = "
-                        + tradableInstrumentID.toString()
-                        + "\n" + " routeId = "
-                        + routeId.toString();
+                        + "\n" + "Symbol = "
+                        + symbolName;
                 TelegramBot telegramBot = new TelegramBot();
                 for (int i = 0 ; i< 2 ; i++) {
                     if (chatid.get(i).equals(""))

@@ -64,14 +64,14 @@ public class Main{
                     for (int i = 0 ; i < propertiesReader.getSymbol().size() ; i ++) {
                         if (propertiesReader.getMode() == Mode.Level3.getMode() || propertiesReader.getMode() == Mode.Level2and3.getMode()) {
                             time = restService.getTime(propertiesReader.getUrl(), token, propertiesReader.getSymbol().get(i), propertiesReader.getRoute().get(i));
-                            result = level3Checker.checkTime(time, propertiesReader.getParameter().get(i),propertiesReader.getSymbol().get(i),propertiesReader.getRoute().get(i));
+                            result = level3Checker.checkTime(time, propertiesReader.getParameter().get(i),propertiesReader.getSymbolName().get(i));
                             if (result != null) logger.error(result);
                             else logger.debug("Ok");
                         }
 
                         if (propertiesReader.getMode() == Mode.Level2.getMode() || propertiesReader.getMode() == Mode.Level2and3.getMode()){
                             level2price = restService.getLevel2(propertiesReader.getUrl(), token, propertiesReader.getSymbol().get(i), propertiesReader.getRoute().get(i));
-                            result = level2Checker.checkLevel2(level2price,propertiesReader.getSymbol().get(i),propertiesReader.getRoute().get(i));
+                            result = level2Checker.checkLevel2(level2price,propertiesReader.getSymbolName().get(i));
                             if (result != null) logger.error(result);
                             else logger.debug("Ok");
                         }

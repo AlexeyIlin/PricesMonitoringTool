@@ -15,6 +15,7 @@ public class PropertiesReader {
     private String login;
     private String pass;
     private ArrayList<Integer> route = new ArrayList<Integer>();
+    private ArrayList<String> symbolName = new ArrayList<String>();
     private ArrayList<Integer> symbol = new ArrayList<Integer>();
     private ArrayList<Integer> parameter = new ArrayList<Integer>();
     private String endtime, starttime;
@@ -41,6 +42,10 @@ public class PropertiesReader {
 
     public ArrayList getSymbol() {
         return symbol;
+    }
+
+    public ArrayList<String> getSymbolName() {
+        return symbolName;
     }
 
     public int getMode() {
@@ -90,9 +95,11 @@ public class PropertiesReader {
             while (!empty) {
                 try {
                     if (property.getProperty("symbol.id"+i) != null
+                            || property.getProperty("symbol.name"+i) != null
                             || property.getProperty("route.id"+i) != null
                             || property.getProperty("delay.parameter"+i) != null) {
                         symbol.add(parseInt(property.getProperty("symbol.id" + i)));
+                        symbolName.add(property.getProperty("symbol.name" + i));
                         route.add(parseInt(property.getProperty("route.id" + i)));
                         parameter.add(parseInt(property.getProperty("delay.parameter" + i)));
                         i++;
