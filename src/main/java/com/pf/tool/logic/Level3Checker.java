@@ -15,7 +15,7 @@ public class Level3Checker {
         long currentTime = rightNow.getTimeInMillis();
 
         PropertiesReader propertiesReader = new PropertiesReader();
-        propertiesReader.fileReader();
+        propertiesReader.readFile();
         ArrayList chatid = propertiesReader.getChatid();
 
         if (time == 0) {

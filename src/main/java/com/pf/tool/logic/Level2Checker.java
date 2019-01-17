@@ -14,7 +14,7 @@ public class Level2Checker {
         double ask = level2price.get(1);
 
         PropertiesReader propertiesReader = new PropertiesReader();
-        propertiesReader.fileReader();
+        propertiesReader.readFile();
         ArrayList chatid = propertiesReader.getChatid();
 
         if ((ask - bid ) < 0 ){
