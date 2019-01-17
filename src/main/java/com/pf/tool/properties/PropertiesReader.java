@@ -78,7 +78,7 @@ public class PropertiesReader {
     }
 
 
-    public void fileReader (){
+    public void readFile (){
 
 
         try{

@@ -30,7 +30,7 @@ public class Main{
         Level2Checker level2Checker = new Level2Checker();
         PropertiesReader propertiesReader = new PropertiesReader();
         RestService restService = new RestService();
-        propertiesReader.fileReader();
+        propertiesReader.readFile();
 
             while (true) {
                 try {
