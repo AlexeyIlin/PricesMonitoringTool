@@ -30,13 +30,13 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
 
         public String getBotUsername() {
-            propertiesReader.fileReader();
+            propertiesReader.readFile();
             return propertiesReader.getBotname();
         }
 
         @Override
         public String getBotToken() {
-            propertiesReader.fileReader();
+            propertiesReader.readFile();
             return propertiesReader.getBottoken();
         }
 
