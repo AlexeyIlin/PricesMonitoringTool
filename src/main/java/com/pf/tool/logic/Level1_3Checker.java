@@ -5,7 +5,7 @@ import com.pf.tool.properties.PropertiesReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Level3Checker {
+public class Level1_3Checker {
 
     public String checkTime(long time, double parameter, String symbolName){
 

@@ -132,7 +132,7 @@ public class RestService {
 
 
 
-    public long getTime(String url, String token, Object tradeinstId, Object routeId){
+    public long getTradeTime(String url, String token, Object tradeinstId, Object routeId){
 
         long time = 0;
         try {
@@ -173,6 +173,45 @@ public class RestService {
         logger.error(e);
 
     }
+        return time;
+    }
+
+    public long getLevel1Time(String url, String token, Object tradeinstId, Object routeId){
+
+        long time = 0;
+
+        try{
+            URL u = new URL(url + "/rest/instruments/"+tradeinstId+"/routes/"+routeId+"/quotes/level1");
+            HttpURLConnection conn = (HttpURLConnection) u.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setRequestProperty("Authorization", "Bearer "+token);
+
+            if (conn.getResponseCode() == 200 ) {
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(
+                        (conn.getInputStream())));
+
+                String output;
+                while ((output = br.readLine()) != null) {
+
+                    JSONObject obj = new JSONObject(output);
+                    time = obj.getLong("time");
+
+                }
+
+                conn.disconnect();
+            }
+
+            else {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            }
+        }catch (MalformedURLException e){
+            logger.error(e);
+        }catch (IOException e) {
+
+            logger.error(e);
+        }
         return time;
     }
 

@@ -1,7 +1,7 @@
 package com.pf.tool;
 
 import com.pf.tool.logic.Level2Checker;
-import com.pf.tool.logic.Level3Checker;
+import com.pf.tool.logic.Level1_3Checker;
 import com.pf.tool.properties.Mode;
 import com.pf.tool.properties.PropertiesReader;
 import com.pf.tool.rest.RestService;
@@ -26,7 +26,7 @@ public class Main{
         Date curTime, stime, etime;
         ArrayList<Double> level2price;
 
-        Level3Checker level3Checker = new Level3Checker();
+        Level1_3Checker level13Checker = new Level1_3Checker();
         Level2Checker level2Checker = new Level2Checker();
         PropertiesReader propertiesReader = new PropertiesReader();
         RestService restService = new RestService();
@@ -62,16 +62,33 @@ public class Main{
 
 
                     for (int i = 0 ; i < propertiesReader.getSymbol().size() ; i ++) {
-                        if (propertiesReader.getMode() == Mode.Level3.getMode() || propertiesReader.getMode() == Mode.Level2and3.getMode()) {
-                            time = restService.getTime(propertiesReader.getUrl(), token, propertiesReader.getSymbol().get(i), propertiesReader.getRoute().get(i));
-                            result = level3Checker.checkTime(time, propertiesReader.getParameter().get(i),propertiesReader.getSymbolName().get(i));
+                        if (propertiesReader.getMode().equals(Mode.Level3.name())
+                                || propertiesReader.getMode().equals(Mode.Level2_3.name())
+                                || propertiesReader.getMode().equals(Mode.Level1_3.name())
+                                || propertiesReader.getMode().equals(Mode.Level1_2_3.name())) {
+
+                            time = restService.getTradeTime(propertiesReader.getUrl(), token, propertiesReader.getSymbol().get(i), propertiesReader.getRoute().get(i));
+                            result = level13Checker.checkTime(time, propertiesReader.getParameter().get(i),propertiesReader.getSymbolName().get(i));
                             if (result != null) logger.error(result);
                             else logger.debug("Ok");
                         }
 
-                        if (propertiesReader.getMode() == Mode.Level2.getMode() || propertiesReader.getMode() == Mode.Level2and3.getMode()){
+                        if (propertiesReader.getMode().equals(Mode.Level2.name())
+                                || propertiesReader.getMode().equals(Mode.Level2_3.name())
+                                || propertiesReader.getMode().equals(Mode.Level1_2.name())
+                                || propertiesReader.getMode().equals(Mode.Level1_2_3.name())){
                             level2price = restService.getLevel2(propertiesReader.getUrl(), token, propertiesReader.getSymbol().get(i), propertiesReader.getRoute().get(i));
                             result = level2Checker.checkLevel2(level2price,propertiesReader.getSymbolName().get(i));
+                            if (result != null) logger.error(result);
+                            else logger.debug("Ok");
+                        }
+
+                        if (propertiesReader.getMode().equals(Mode.Level1.name())
+                                || propertiesReader.getMode().equals(Mode.Level1_2.name())
+                                || propertiesReader.getMode().equals(Mode.Level1_3.name())
+                                || propertiesReader.getMode().equals(Mode.Level1_2_3.name())) {
+                            time = restService.getLevel1Time(propertiesReader.getUrl(), token, propertiesReader.getSymbol().get(i), propertiesReader.getRoute().get(i));
+                            result = level13Checker.checkTime(time, propertiesReader.getParameter().get(i),propertiesReader.getSymbolName().get(i));
                             if (result != null) logger.error(result);
                             else logger.debug("Ok");
                         }

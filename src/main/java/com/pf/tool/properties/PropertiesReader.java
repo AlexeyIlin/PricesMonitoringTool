@@ -22,7 +22,7 @@ public class PropertiesReader {
     private String botname;
     private String bottoken;
     private ArrayList<String> chatid = new ArrayList<String>();
-    private int mode;
+    private String mode;
 
     public String getUrl() {
         return url;
@@ -48,7 +48,7 @@ public class PropertiesReader {
         return symbolName;
     }
 
-    public int getMode() {
+    public String getMode() {
         return mode;
     }
 
@@ -112,7 +112,7 @@ public class PropertiesReader {
 
             }
 
-            mode = parseInt(property.getProperty("mode.type"));
+            mode = property.getProperty("mode.type");
             starttime = property.getProperty("start.time");
             endtime = property.getProperty("end.time");
             botname = property.getProperty("bot.name");
